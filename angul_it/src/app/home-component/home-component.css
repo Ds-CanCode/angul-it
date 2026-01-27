@@ -39,14 +39,10 @@ html, body, app-root {
   animation: slideDown 0.6s ease-out;
 }
 
-.logo-icon {
-  font-size: 4rem;
-  animation: rotate 2s ease-in-out infinite alternate;
-}
 
 .logo-text {
   font-family: 'Courier New', monospace;
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   font-weight: 800;
   margin: 0;
   background: linear-gradient(135deg, #00f5ff, #0077ff);
@@ -62,7 +58,7 @@ html, body, app-root {
   color: #00f5ff;
   margin-bottom: 2rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.5em;
   font-weight: 600;
   animation: glow 2s ease-in-out infinite alternate;
 }
@@ -70,7 +66,7 @@ html, body, app-root {
 .description {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 3rem;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   line-height: 1.6;
   animation: fadeIn 1s ease-out 0.3s both;
   
@@ -79,48 +75,9 @@ html, body, app-root {
   }
 }
 
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  animation: fadeIn 1s ease-out 0.5s both;
-}
 
-.feature {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: rgba(0, 245, 255, 0.1);
-  border: 1px solid rgba(0, 245, 255, 0.3);
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: rgba(0, 245, 255, 0.2);
-    border-color: rgba(0, 245, 255, 0.5);
-    transform: translateY(-2px);
-  }
-}
 
-.feature-icon {
-  font-size: 1.5rem;
-}
 
-.feature-text {
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  animation: fadeIn 1s ease-out 0.7s both;
-}
 
 .btn {
   padding: 1rem 2.5rem;
@@ -149,7 +106,7 @@ html, body, app-root {
   }
   
   &:hover::before {
-    width: 300px;
+    width: 100%;
     height: 300px;
   }
   
@@ -243,19 +200,5 @@ html, body, app-root {
 @media (max-width: 768px) {
   .logo-text {
     font-size: 2.5rem;
-  }
-  
-  .logo-icon {
-    font-size: 3rem;
-  }
-  
-  .features {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .feature {
-    width: 100%;
-    justify-content: center;
   }
 }
