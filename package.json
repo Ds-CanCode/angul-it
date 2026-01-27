@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@angular/cli": "^21.1.1"
+  },
+  "dependencies": {
+    "@angular/animations": "^21.1.1",
+    "@angular/platform-browser": "^21.1.1"
+  }
+}

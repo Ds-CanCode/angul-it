@@ -1,0 +1,76 @@
+<div class="result-container" *ngIf="result">
+  <div class="result-card">
+    <div class="status-badge" [class]="getStatusClass()">
+      <div class="status-icon">
+        <span *ngIf="result.passed">✓</span>
+        <span *ngIf="!result.passed">✗</span>
+      </div>
+      <h1 class="status-message">{{ getStatusMessage() }}</h1>
+    </div>
+
+    <div class="stars" *ngIf="result.passed">
+      <span class="star" *ngFor="let star of getStars(); let i = index" 
+            [style.animation-delay.ms]="i * 100">
+        {{ star }}
+      </span>
+    </div>
+
+    <div class="results-grid">
+      <div class="result-item" style="animation-delay: 0.1s">
+        <div class="result-icon">🎯</div>
+        <div class="result-label">Score</div>
+        <div class="result-value">{{ result.score }}/100</div>
+        <div class="result-bar">
+          <div class="result-bar-fill" [style.width.%]="getScorePercentage()"></div>
+        </div>
+      </div>
+
+      <div class="result-item" style="animation-delay: 0.2s">
+        <div class="result-icon">✓</div>
+        <div class="result-label">Correct Answers</div>
+        <div class="result-value">{{ result.correctAnswers }}/{{ result.totalChallenges }}</div>
+        <div class="result-bar">
+          <div class="result-bar-fill accuracy" [style.width.%]="getAccuracyPercentage()"></div>
+        </div>
+      </div>
+
+      <div class="result-item" style="animation-delay: 0.3s">
+        <div class="result-icon">⏱️</div>
+        <div class="result-label">Time Spent</div>
+        <div class="result-value">{{ formatTime(result.timeSpent) }}</div>
+      </div>
+
+      <div class="result-item" style="animation-delay: 0.4s">
+        <div class="result-icon">📊</div>
+        <div class="result-label">Accuracy</div>
+        <div class="result-value">{{ getAccuracyPercentage() }}%</div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <p *ngIf="result.passed" class="summary-text success-text">
+        Congratulations! You've successfully completed all challenges and proven you're human. 
+        Your attention to detail and problem-solving skills are impressive!
+      </p>
+      <p *ngIf="!result.passed" class="summary-text error-text">
+        Some challenges were not completed correctly. Don't worry! You can try again 
+        and improve your score.
+      </p>
+    </div>
+
+    <button class="btn btn-restart" (click)="restartChallenge()">
+      Start New Challenge
+    </button>
+  </div>
+
+  <div class="celebration" *ngIf="result.passed">
+    <div class="confetti" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" 
+         [style.left.%]="i * 10" 
+         [style.animation-delay.ms]="i * 50">
+    </div>
+  </div>
+
+  <div class="background-pattern">
+    <div class="pattern-circle" *ngFor="let i of [1,2,3,4,5]"></div>
+  </div>
+</div>
