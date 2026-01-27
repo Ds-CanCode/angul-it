@@ -15,7 +15,7 @@ export class HomeComponent {
 
   startChallenge(): void {
     // this.captchaStateService.resetCaptcha();
-    this.router.navigate(['/captcha']);
+    this.router.navigate(['/captcha1']);
   }
 
 }

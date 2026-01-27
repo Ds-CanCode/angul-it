@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
+import { CaptchaGuard } from './guard/captcha.guard';
 
 export const routes: Routes = [
-    { path: '', loadComponent: () => import('./home-component/home-component').then(m => m.HomeComponent) },
-    // { path: '/captcha', loadComponent: () => import('./captcha-component/captcha-component').then(m => m.CaptchaComponent) },
+    { path: '', loadComponent: () => import('./home-component/home-component').then(m => m.HomeComponent) , canActivate: [CaptchaGuard]},
+    { path: 'captcha1', loadComponent: () => import('./captcha-component/captcha-1/captcha-1').then(m => m.Captcha1), canActivate: [CaptchaGuard] },
+    { path: 'captcha2', loadComponent: () => import('./captcha-component/captcha-2/captcha-2').then(m => m.Captcha2), canActivate: [CaptchaGuard] },
 ];
