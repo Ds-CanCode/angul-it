@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { CaptchaStateService } from '../../service/captcha-state.service';
 
 interface CaptchaImage {
   id: string;
   url: string;
-  label: string;
   isCorrect: boolean;
 }
 
@@ -21,128 +22,50 @@ interface CaptchaChallenge {
   templateUrl: './captcha-2.html',
   styleUrl: './captcha-2.css',
 })
-
 export class Captcha2 {
-  @Input() challenge?: CaptchaChallenge;
-  @Output() onValidate = new EventEmitter<boolean>();
-  @Output() onBack = new EventEmitter<void>();
 
-  selectedImages: Set<string> = new Set();
+  private readonly CURRENT_STAGE = 2;
+
+  @Input() challenge?: CaptchaChallenge;
+
+  selectedImages = new Set<string>();
   isValidating = false;
   showResult = false;
   isSuccess = false;
 
-  // Données de démonstration par défaut
   defaultChallenge: CaptchaChallenge = {
-    instruction: 'Sélectionnez toutes les images contenant des chats',
+    instruction: 'Select all images containing cats',
     images: [
-      {
-        id: 'cat-1',
-        url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop',
-        label: 'Feline Friends',
-        isCorrect: true
-      },
-      {
-        id: 'dog-1',
-        url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop',
-        label: 'Canine Companions',
-        isCorrect: false
-      },
-      {
-        id: 'dog-2',
-        url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop',
-        label: 'Feathered Friends',
-        isCorrect: false
-      },
-      {
-        id: 'cat-2',
-        url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop',
-        label: 'Curious Cat',
-        isCorrect: true
-      },
-      {
-        id: 'dog-3',
-        url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop',
-        label: 'Small Mammals',
-        isCorrect: false
-      },
-      {
-        id: 'cat-3',
-        url: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=800&auto=format&fit=crop',
-        label: 'Playful Kitten',
-        isCorrect: true
-      }
+      { id: 'cat-1', url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba', isCorrect: true },
+      { id: 'dog-1', url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1', isCorrect: false },
+      { id: 'dog-2', url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1', isCorrect: false },
+      { id: 'cat-2', url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba', isCorrect: true },
+      { id: 'dog-3', url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1', isCorrect: false },
+      { id: 'cat-3', url: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce', isCorrect: true },
     ],
     correctAnswers: ['cat-1', 'cat-2', 'cat-3']
   };
 
+  constructor(
+    private router: Router,
+    private state: CaptchaStateService
+  ) { }
+
   ngOnInit() {
-    // Utiliser le challenge fourni ou le challenge par défaut
+    if (!this.state.canAccessStage(this.CURRENT_STAGE)) {
+      this.router.navigate([`/captcha${this.state.getProgress()}`]);
+      return;
+    }
+
     if (!this.challenge) {
       this.challenge = this.defaultChallenge;
     }
-  }
 
-  toggleSelection(imageId: string) {
-    if (this.isValidating || this.showResult) return;
-
-    if (this.selectedImages.has(imageId)) {
-      this.selectedImages.delete(imageId);
-    } else {
-      this.selectedImages.add(imageId);
-    }
+    this.challenge.images = this.shuffleArray(this.challenge.images);
   }
 
   isSelected(imageId: string): boolean {
     return this.selectedImages.has(imageId);
-  }
-
-  validateCaptcha() {
-    if (this.selectedImages.size === 0 || !this.challenge) {
-      return;
-    }
-
-    this.isValidating = true;
-
-    // Simuler une validation avec délai
-    setTimeout(() => {
-      const correctAnswers = new Set(this.challenge!.correctAnswers);
-      const selectedArray = Array.from(this.selectedImages);
-
-      // Vérifier si toutes les réponses sélectionnées sont correctes
-      // et si toutes les réponses correctes ont été sélectionnées
-      const allSelectedAreCorrect = selectedArray.every(id => correctAnswers.has(id));
-      const allCorrectAreSelected = this.challenge!.correctAnswers.every(id =>
-        this.selectedImages.has(id)
-      );
-
-      this.isSuccess = allSelectedAreCorrect && allCorrectAreSelected;
-      this.showResult = true;
-      this.isValidating = false;
-
-      // Émettre le résultat
-      setTimeout(() => {
-        this.onValidate.emit(this.isSuccess);
-
-        // Réinitialiser après succès
-        if (this.isSuccess) {
-          setTimeout(() => {
-            this.resetCaptcha();
-          }, 1500);
-        }
-      }, 1000);
-    }, 800);
-  }
-
-  resetCaptcha() {
-    this.selectedImages.clear();
-    this.showResult = false;
-    this.isSuccess = false;
-    this.isValidating = false;
-  }
-
-  goBack() {
-    this.onBack.emit();
   }
 
   getImageClass(imageId: string): string {
@@ -153,11 +76,12 @@ export class Captcha2 {
     }
 
     if (this.showResult) {
-      const image = this.challenge?.images.find(img => img.id === imageId);
+      const image = this.challenge?.images.find(i => i.id === imageId);
       if (image) {
-        if (this.selectedImages.has(imageId)) {
+        if (this.isSelected(imageId)) {
           classes.push(image.isCorrect ? 'correct' : 'incorrect');
-        } else if (image.isCorrect) {
+        }
+        else if (image.isCorrect) {
           classes.push('missed');
         }
       }
@@ -166,7 +90,62 @@ export class Captcha2 {
     return classes.join(' ');
   }
 
-  get canValidate(): boolean {
-    return this.selectedImages.size > 0 && !this.isValidating && !this.showResult;
+  toggleSelection(imageId: string) {
+    if (this.isValidating || this.showResult) return;
+
+    this.isSelected(imageId)
+      ? this.selectedImages.delete(imageId)
+      : this.selectedImages.add(imageId);
   }
+
+  validateCaptcha() {
+    if (this.state.canAccessStage(this.CURRENT_STAGE + 1)) {
+      this.router.navigate([`/captcha${this.state.getProgress()}`]);
+      return;
+    }
+
+    if (!this.challenge || this.selectedImages.size === 0) return;
+
+    this.isValidating = true;
+
+    const correctAnswers = new Set(this.challenge.correctAnswers);
+    const userAnswers = Array.from(this.selectedImages);
+
+    this.isSuccess =
+      correctAnswers.size === userAnswers.length &&
+      userAnswers.every(ans => correctAnswers.has(ans));
+
+    this.showResult = true;
+    this.isValidating = false;
+
+    if (this.isSuccess) {
+      this.state.saveProgress(this.CURRENT_STAGE + 1);
+      this.router.navigate([`/captcha${this.CURRENT_STAGE + 1}`]);
+    }
+
+   
+  }
+
+
+
+  resetCaptcha() {
+    this.selectedImages.clear();
+    this.showResult = false;
+    this.isSuccess = false;
+    this.isValidating = false;
+  }
+
+  goBack() {
+    this.router.navigate([`/captcha${this.CURRENT_STAGE - 1}`]);
+  }
+
+
+  private shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  
 }

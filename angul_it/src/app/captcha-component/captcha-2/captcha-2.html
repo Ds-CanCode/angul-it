@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../captcha-1/captcha-1.css">
 </head>
 
-
 <body>
     <div class="captcha-wrapper">
         <div class="bg-shape shape-1"></div>
@@ -34,11 +33,7 @@
                 <div *ngFor="let image of challenge?.images" [class]="getImageClass(image.id)"
                     (click)="toggleSelection(image.id)" [attr.data-id]="image.id">
 
-                    <img [src]="image.url" [alt]="image.label" loading="lazy">
-
-                    <div class="overlay">
-                        <span class="label">{{ image.label }}</span>
-                    </div>
+                    <img [src]="image.url"  loading="lazy">
 
                     <!-- Indicateur de sélection -->
                     <div class="selection-indicator" *ngIf="isSelected(image.id) && !showResult">
@@ -60,31 +55,26 @@
             <!-- Compteur de sélection -->
             <div class="selection-counter" *ngIf="!showResult">
                 <i class="ri-image-line"></i>
-                <span>{{ selectedImages.size }} image(s) sélectionnée(s)</span>
+                <span>{{ selectedImages.size }} selected image(s)</span>
             </div>
 
             <!-- Actions -->
             <div class="actions">
                 <button class="btn btn-secondary" (click)="goBack()" [disabled]="isValidating">
                     <i class="ri-arrow-left-line"></i>
-                    <span>Retour</span>
+                    <span>Back</span>
                 </button>
 
-                <button class="btn btn-primary" (click)="showResult ? resetCaptcha() : validateCaptcha()"
-                    [disabled]="!canValidate && !showResult" [class.loading]="isValidating">
-                    <span *ngIf="!isValidating && !showResult">Valider</span>
-                    <span *ngIf="isValidating">Validation...</span>
+                <button class="btn btn-primary" (click)="showResult ? resetCaptcha() : validateCaptcha()">
+                    <span *ngIf=" !showResult">Next Step</span>
                     <span *ngIf="showResult && !isSuccess">Réessayer</span>
-                    <span *ngIf="showResult && isSuccess">Continuer</span>
-                    <i class="ri-arrow-right-line" *ngIf="!isValidating"></i>
-                    <i class="ri-loader-4-line spin" *ngIf="isValidating"></i>
                 </button>
             </div>
 
             <!-- Instructions supplémentaires -->
             <div class="instructions" *ngIf="!showResult">
                 <i class="ri-information-line"></i>
-                <p>Cliquez sur les images pour les sélectionner. Vous pouvez sélectionner plusieurs images.</p>
+                <p>Click on the images to select them. You can select multiple images.</p>
             </div>
         </div>
     </div>

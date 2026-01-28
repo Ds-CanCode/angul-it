@@ -12,11 +12,14 @@ import { CaptchaStateService } from '../../service/captcha-state.service';
   styleUrls: ['./captcha-1.css']
 })
 export class Captcha1 {
+  private readonly CURRENT_STAGE = 1;
+
   captchaCode: string = this.generateCaptcha();
   userInput: string = '';
   errorMessage: string = '';
 
   constructor(private router: Router, private state: CaptchaStateService) { }
+
 
   generateCaptcha(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -34,6 +37,10 @@ export class Captcha1 {
   }
 
   validateCaptcha() {
+    if (this.state.canAccessStage(this.CURRENT_STAGE + 1)) {
+      this.router.navigate([`/captcha${this.CURRENT_STAGE + 1}`]);
+      return;
+    }
     if (this.userInput.replace(/\s+/g, '') === this.captchaCode.replace(/\s+/g, '')) {
       this.errorMessage = '';
       this.state.saveProgress(2);
