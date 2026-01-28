@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class CaptchaStateService {
 
-  private storageKey = 'angulit-progress';
+  private storageKey = 'angulit-progress-key';
   private prefix = 'STAGE:'; 
 
 

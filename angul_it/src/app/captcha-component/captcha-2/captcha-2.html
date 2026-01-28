@@ -1,64 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Selection</title>
+    <title>Captcha Verification</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../captcha-2/captcha-2.css">
+    <link rel="stylesheet" href="../captcha-1/captcha-1.css">
 </head>
+
+
 <body>
+    <div class="captcha-wrapper">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
 
-    <div class="bg-shape shape-1"></div>
-    <div class="bg-shape shape-2"></div>
+        <div class="container">
+            <!-- En-tête -->
+            <div class="header">
+                <i class="ri-shield-check-line" style="font-size: 48px; color: #3b82f6; margin-bottom: 20px;"></i>
+                <h1>Security Verification</h1>
+                <p class="subtitle">{{ challenge?.instruction || 'Sélectionnez les images correspondantes' }}</p>
+            </div>
 
-    <div class="container">
-        <h1>Select Your Favorite Companion</h1>
-        <p class="subtitle">Choose the category that best resonates with your lifestyle.</p>
+            <!-- Message de résultat -->
+            <div class="result-message" *ngIf="showResult" [class.success]="isSuccess" [class.error]="!isSuccess">
+                <i [class]="isSuccess ? 'ri-checkbox-circle-fill' : 'ri-close-circle-fill'"></i>
+                <span>{{ isSuccess ? 'Validation réussie !' : 'Sélection incorrecte, veuillez réessayer' }}</span>
+            </div>
 
-        <div class="gallery-grid">
-            <!-- Cat -->
-            <div class="gallery-item selected">
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop" alt="Cat">
-                <div class="overlay">
-                    <span class="label">Feline Friends</span>
+            <!-- Grille d'images -->
+            <div class="gallery-grid">
+                <div *ngFor="let image of challenge?.images" [class]="getImageClass(image.id)"
+                    (click)="toggleSelection(image.id)" [attr.data-id]="image.id">
+
+                    <img [src]="image.url" [alt]="image.label" loading="lazy">
+
+                    <div class="overlay">
+                        <span class="label">{{ image.label }}</span>
+                    </div>
+
+                    <!-- Indicateur de sélection -->
+                    <div class="selection-indicator" *ngIf="isSelected(image.id) && !showResult">
+                        <i class="ri-check-line"></i>
+                    </div>
+
+                    <!-- Indicateur de résultat -->
+                    <div class="result-indicator" *ngIf="showResult && isSelected(image.id)">
+                        <i [class]="image.isCorrect ? 'ri-check-line' : 'ri-close-line'"></i>
+                    </div>
+
+                    <!-- Indicateur d'images manquées -->
+                    <div class="missed-indicator" *ngIf="showResult && !isSelected(image.id) && image.isCorrect">
+                        <i class="ri-error-warning-line"></i>
+                    </div>
                 </div>
             </div>
 
-            <!-- Dog -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop" alt="Dog">
-                <div class="overlay">
-                    <span class="label">Canine Companions</span>
-                </div>
+            <!-- Compteur de sélection -->
+            <div class="selection-counter" *ngIf="!showResult">
+                <i class="ri-image-line"></i>
+                <span>{{ selectedImages.size }} image(s) sélectionnée(s)</span>
             </div>
 
-            <!-- Bird -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1444464666117-26f60311ab85?q=80&w=800&auto=format&fit=crop" alt="Bird">
-                <div class="overlay">
-                    <span class="label">Feathered Friends</span>
-                </div>
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-secondary" (click)="goBack()" [disabled]="isValidating">
+                    <i class="ri-arrow-left-line"></i>
+                    <span>Retour</span>
+                </button>
+
+                <button class="btn btn-primary" (click)="showResult ? resetCaptcha() : validateCaptcha()"
+                    [disabled]="!canValidate && !showResult" [class.loading]="isValidating">
+                    <span *ngIf="!isValidating && !showResult">Valider</span>
+                    <span *ngIf="isValidating">Validation...</span>
+                    <span *ngIf="showResult && !isSuccess">Réessayer</span>
+                    <span *ngIf="showResult && isSuccess">Continuer</span>
+                    <i class="ri-arrow-right-line" *ngIf="!isValidating"></i>
+                    <i class="ri-loader-4-line spin" *ngIf="isValidating"></i>
+                </button>
             </div>
 
-            <!-- Rabbit -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1585110396067-c1d6651e4b09?q=80&w=800&auto=format&fit=crop" alt="Rabbit">
-                <div class="overlay">
-                    <span class="label">Small Mammals</span>
-                </div>
+            <!-- Instructions supplémentaires -->
+            <div class="instructions" *ngIf="!showResult">
+                <i class="ri-information-line"></i>
+                <p>Cliquez sur les images pour les sélectionner. Vous pouvez sélectionner plusieurs images.</p>
             </div>
-        </div>
-
-        <div class="actions">
-            <a href="#" class="btn btn-secondary">
-                <i class="ri-arrow-left-line"></i> Go Back
-            </a>
-            <a href="#" class="btn btn-primary">
-                Next Step <i class="ri-arrow-right-line"></i>
-            </a>
         </div>
     </div>
-
 </body>
-</html>
