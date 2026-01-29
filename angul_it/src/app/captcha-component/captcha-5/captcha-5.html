@@ -1,1 +1,50 @@
-<p>captcha-5 works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Verification</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../captcha-1/captcha-1.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="main-content">
+            <i class="ri-shield-check-line" style="font-size: 48px; color: #3b82f6; margin-bottom: 20px;"></i>
+            <h1>Security Verification</h1>
+            <p class="subtitle">Please enter the characters you see below to verify you are human.</p>
+
+            <div class="captcha-wrapper">
+                <div class="captcha-box">
+                    <span class="captcha-code">{{ captchaQuestion }}</span>
+                    <button class="refresh-btn" (click)="refreshCaptcha()" aria-label="Refresh Captcha">
+                        <i class="ri-refresh-line"></i>
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="userInput" class="input-field"
+                        placeholder="Enter verification code">
+                </div>
+
+                <p class="error-message" *ngIf="errorMessage" style="color: red; margin-top: 10px;">{{ errorMessage }}
+                </p>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" (click)="goBack()">
+                        <i class="ri-arrow-left-line"></i> Go Back
+                    </button>
+                    <button class="btn btn-primary" (click)="validateCaptcha()">
+                        Next Step <i class="ri-arrow-right-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

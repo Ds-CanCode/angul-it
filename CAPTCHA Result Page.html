@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTCHA Complete</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'MiSans-Regular';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'MiSans-Medium';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'MiSans-Bold';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 768px;
+            background-color: #f8f9fa;
+            font-family: 'MiSans-Regular', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            margin: 40px 0;
+        }
+
+        .icon-wrapper {
+            width: 100px;
+            height: 100px;
+            background-color: #e8f8f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .icon-wrapper i {
+            font-size: 48px;
+            color: #2ECC71;
+        }
+
+        h1 {
+            font-family: 'MiSans-Bold', sans-serif;
+            font-size: 32px;
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+        }
+
+        p.subtitle {
+            font-family: 'MiSans-Regular', sans-serif;
+            font-size: 18px;
+            color: #7f8c8d;
+            margin: 0 0 40px 0;
+        }
+
+        .result-card {
+            width: 100%;
+            background-color: #f7f9fc;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-sizing: border-box;
+            border: 1px solid #edf2f7;
+        }
+
+        .challenge-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-family: 'MiSans-Medium', sans-serif;
+            font-size: 16px;
+        }
+
+        .challenge-item:last-child {
+            border-bottom: none;
+        }
+
+        .challenge-name {
+            color: #4a5568;
+        }
+
+        .challenge-status {
+            color: #2ECC71;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-restart {
+            background-color: #2ECC71;
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 50px;
+            font-family: 'MiSans-Medium', sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .link-start-over {
+            margin-top: 24px;
+            color: #95a5a6;
+            text-decoration: none;
+            font-size: 16px;
+            font-family: 'MiSans-Regular', sans-serif;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="icon-wrapper">
+            <i class="ri-checkbox-circle-fill"></i>
+        </div>
+        
+        <h1>CAPTCHA Complete</h1>
+        <p class="subtitle">All challenges successfully completed</p>
+
+        <div class="result-card">
+            <div class="challenge-item">
+                <span class="challenge-name">Challenge 1</span>
+                <span class="challenge-status">Passed <i class="ri-check-line"></i></span>
+            </div>
+            <div class="challenge-item">
+                <span class="challenge-name">Challenge 2</span>
+                <span class="challenge-status">Passed <i class="ri-check-line"></i></span>
+            </div>
+            <div class="challenge-item">
+                <span class="challenge-name">Challenge 3</span>
+                <span class="challenge-status">Passed <i class="ri-check-line"></i></span>
+            </div>
+        </div>
+
+        <button class="btn-restart">Restart Challenge</button>
+        <a href="#" class="link-start-over">Start Over</a>
+    </div>
+
+</body>
+</html>

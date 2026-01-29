@@ -100,7 +100,7 @@ export class Captcha2 {
 
   validateCaptcha() {
     if (this.state.canAccessStage(this.CURRENT_STAGE + 1)) {
-      this.router.navigate([`/captcha${this.state.getProgress()}`]);
+      this.router.navigate([`/captcha${this.CURRENT_STAGE + 1}`]);
       return;
     }
 
