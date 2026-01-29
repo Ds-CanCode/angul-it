@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { CaptchaStateService } from '../../service/captcha-state.service';
 
@@ -26,7 +26,7 @@ export class Captcha4 {
 
   private readonly CURRENT_STAGE = 4;
 
-  @Input() challenge?: CaptchaChallenge;
+  challenge?: CaptchaChallenge;
 
   selectedImages = new Set<string>();
   isValidating = false;
